@@ -132,6 +132,7 @@ public enum ReaderCommand
 
 	DCMD_BACKLIGHT_SET_DEFAULT(2058),
 	DCMD_SHOW_SYSTEM_BACKLIGHT_DIALOG(2059),
+	DCMD_BACKLIGHT_STEP(2060),
 
 	/*
 	  Commented until the appearance of free implementation of the binding to the Google Drive (R)

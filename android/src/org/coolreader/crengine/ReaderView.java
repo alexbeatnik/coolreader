@@ -2592,6 +2592,9 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
 				log.i("Switched to dictionary: " + Integer.toString(mActivity.mDictionaries.isiDic2IsActive() + 1));
 				mActivity.showToast("Switched to dictionary: " + Integer.toString(mActivity.mDictionaries.isiDic2IsActive() + 1));
 				break;
+			case DCMD_BACKLIGHT_STEP:
+				stepBacklight(param);
+				break;
 			case DCMD_BACKLIGHT_SET_DEFAULT:
 				setSetting(PROP_APP_SCREEN_BACKLIGHT, "-1");		// system default backlight level
 				break;
@@ -4134,6 +4137,42 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
 	}
 
 	private static final boolean showBrightnessFlickToast = false;
+
+	private android.widget.Toast backlightToast;
+	private final DelayedExecutor backlightSaver = DelayedExecutor.createGUI("backlightSave");
+
+	/**
+	 * One step of the brightness table up (dir > 0) or down, from the keys: keypad phones have no
+	 * touch to flick with. Holding the key repeats it. Starting from "as in the system", the steps
+	 * begin at the system's current brightness. The setting is written once the keys go quiet.
+	 */
+	private void stepBacklight(int dir) {
+		if (DeviceInfo.EINK_SCREEN)
+			return; // e-ink front lights have their own level lists (flick control)
+		int[] levels = OptionsDialog.mBacklightLevels;
+		int index = OptionsDialog.findBacklightSettingIndex(mActivity.getScreenBacklightLevel());
+		if (index == 0) {
+			int system = 128;
+			try {
+				system = android.provider.Settings.System.getInt(mActivity.getContentResolver(),
+						android.provider.Settings.System.SCREEN_BRIGHTNESS);
+			} catch (Exception ignored) {
+			}
+			index = Math.max(1, OptionsDialog.findBacklightSettingIndex(system * 100 / 255));
+		}
+		int next = Math.max(1, Math.min(levels.length - 1, index + (dir > 0 ? 1 : -1)));
+		int level = levels[next];
+		mActivity.setScreenBacklightLevel(level);
+		mSettings.setInt(PROP_APP_SCREEN_BACKLIGHT, level);
+		backlightSaver.postDelayed(() -> saveSettings(mSettings), 1500);
+		// One toast that updates in place, so a held key doesn't queue up a pile of them.
+		String text = OptionsDialog.mBacklightLevelsTitles[next];
+		if (backlightToast == null)
+			backlightToast = android.widget.Toast.makeText(mActivity, text, android.widget.Toast.LENGTH_SHORT);
+		else
+			backlightToast.setText(text);
+		backlightToast.show();
+	}
 
 
 	private void startAnimation(final int startX, final int startY, final int maxX, final int maxY, final int newX, final int newY) {

@@ -133,6 +133,9 @@ public class ReaderAction {
 	public final static ReaderAction EXIT = new ReaderAction("EXIT", R.string.action_exit, ReaderCommand.DCMD_EXIT, 0, R.id.cr3_mi_exit ).setIconId(R.drawable.cr3_viewer_exit);
 
 	public final static ReaderAction BACKLIGHT_SET_DEFAULT = new ReaderAction("BACKLIGHT_SET_DEFAULT", R.string.action_backlight_set_default, ReaderCommand.DCMD_BACKLIGHT_SET_DEFAULT, -1);
+	// Keypad phones: brightness from the keys, as the flick control does by touch
+	public final static ReaderAction BACKLIGHT_UP = new ReaderAction("BACKLIGHT_UP", R.string.action_backlight_up, ReaderCommand.DCMD_BACKLIGHT_STEP, 1);
+	public final static ReaderAction BACKLIGHT_DOWN = new ReaderAction("BACKLIGHT_DOWN", R.string.action_backlight_down, ReaderCommand.DCMD_BACKLIGHT_STEP, -1);
 	public final static ReaderAction SHOW_SYSTEM_BACKLIGHT_DIALOG = new ReaderAction("SHOW_SYSTEM_BACKLIGHT_DIALOG", R.string.action_show_onyx_backlight_system_dialog, ReaderCommand.DCMD_SHOW_SYSTEM_BACKLIGHT_DIALOG, -1);
 
 	/*
@@ -276,6 +279,8 @@ public class ReaderAction {
 				TOGGLE_DICT_ONCE,
 				TOGGLE_DICT,
 				BACKLIGHT_SET_DEFAULT,
+				BACKLIGHT_UP,
+				BACKLIGHT_DOWN,
 				SAVE_LOGCAT
 		};
 		/*
