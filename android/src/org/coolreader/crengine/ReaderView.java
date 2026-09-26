@@ -701,6 +701,11 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
 	private int isWarmBacklightControlFlick = 2;
 	private boolean isColdWarmBacklightControlTogether = false;
 	private boolean isTouchScreenEnabled = true;
+
+	/** Touch is ignored in the reader: the setting (keypad phones), or the lock/unlock action. */
+	public boolean isTouchScreenLocked() {
+		return !isTouchScreenEnabled;
+	}
 	//	private boolean isManualScrollActive = false;
 //	private boolean isBrightnessControlActive = false;
 //	private int manualScrollStartPosX = -1;
@@ -2910,6 +2915,8 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
 		boolean flg = "1".equals(value);
 		if (key.equals(PROP_APP_TAP_ZONE_HILIGHT)) {
 			hiliteTapZoneOnTap = flg;
+		} else if (key.equals(PROP_APP_TOUCH_LOCK)) {
+			isTouchScreenEnabled = !flg;
 		} else if (key.equals(PROP_APP_DOUBLE_TAP_SELECTION)) {
 			doubleTapSelectionEnabled = flg;
 		} else if (key.equals(PROP_APP_BOUNCE_TAP_INTERVAL)) {
@@ -2976,6 +2983,7 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
 					|| PROP_APP_BOOK_PROPERTY_SCAN_ENABLED.equals(key)
 					|| PROP_APP_SCREEN_BACKLIGHT_LOCK.equals(key)
 					|| PROP_APP_TAP_ZONE_HILIGHT.equals(key)
+					|| PROP_APP_TOUCH_LOCK.equals(key)
 					|| PROP_APP_DICTIONARY.equals(key)
 					|| PROP_APP_DOUBLE_TAP_SELECTION.equals(key)
 					|| PROP_APP_BOUNCE_TAP_INTERVAL.equals(key)

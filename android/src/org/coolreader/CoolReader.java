@@ -40,7 +40,9 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
+import android.os.Environment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -225,6 +227,7 @@ public class CoolReader extends BaseActivity {
 		// Can request only one set of permissions at a time
 		// Then request all permission at a time.
 		requestStoragePermissions();
+		requestAllFilesAccess();
 
 		// apply settings
 		onSettingsChanged(settings(), null);
@@ -955,6 +958,12 @@ public class CoolReader extends BaseActivity {
 
 		if (mReaderView != null)
 			mReaderView.onAppResume();
+		if (waitingForAllFilesAccess && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+				&& Environment.isExternalStorageManager()) {
+			waitingForAllFilesAccess = false;
+			log.i("All files access GRANTED, switching to the shared .cr3 folder...");
+			onStorageAccessGranted();
+		}
 		// ACTION_BATTERY_CHANGED: This is a sticky broadcast containing the charging state, level, and other information about the battery.
 		Intent intent = registerReceiver(batteryChangeReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		if (null != intent) {
@@ -1095,6 +1104,44 @@ public class CoolReader extends BaseActivity {
 		log.i("CoolReader.onStop() exiting");
 	}
 
+	/** Storage became readable: settings, database and history move to the shared .cr3 folder. */
+	private void onStorageAccessGranted() {
+		Services.refreshServices(this);
+		rebaseSettings();
+		waitForCRDBService(() -> {
+			getDBService().setPathCorrector(Engine.getInstance(CoolReader.this).getPathCorrector());
+			getDB().reopenDatabase();
+			Services.getHistory().loadFromDB(getDB(), 200);
+		});
+		mHomeFrame.refreshView();
+	}
+
+	/** Sent to the "All files access" screen; picked up again in onResume(). */
+	private boolean waitingForAllFilesAccess = false;
+
+	/**
+	 * Android 11+ no longer lets the storage permissions reach books outside the app, on the phone
+	 * or the SD card: that takes "All files access", which only the user can turn on in Settings.
+	 */
+	private void requestAllFilesAccess() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R || Environment.isExternalStorageManager())
+			return;
+		showNotice(R.string.all_files_access_notice, R.string.all_files_access_open, () -> {
+			waitingForAllFilesAccess = true;
+			try {
+				startActivity(new Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+						Uri.parse("package:" + getPackageName())));
+			} catch (Exception e) {
+				try {
+					startActivity(new Intent(android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION));
+				} catch (Exception e2) {
+					waitingForAllFilesAccess = false;
+					log.e("Cannot open All files access settings", e2);
+				}
+			}
+		}, R.string.dlg_button_cancel, null);
+	}
+
 	private void requestStoragePermissions() {
 		// check or request permission for storage
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -1159,14 +1206,7 @@ public class CoolReader extends BaseActivity {
 			}
 			if (2 == ext_sd_perm_count) {
 				log.i("read&write to storage permissions GRANTED, adding sd card mount point...");
-				Services.refreshServices(this);
-				rebaseSettings();
-				waitForCRDBService(() -> {
-					getDBService().setPathCorrector(Engine.getInstance(CoolReader.this).getPathCorrector());
-					getDB().reopenDatabase();
-					Services.getHistory().loadFromDB(getDB(), 200);
-				});
-				mHomeFrame.refreshView();
+				onStorageAccessGranted();
 			}
 			if (Engine.getExternalSettingsDirName() != null) {
 				setExtDataDirCreateTime(new Date());
@@ -1298,6 +1338,18 @@ public class CoolReader extends BaseActivity {
 			 */
 			validateSettings();
 		}
+	}
+
+	/**
+	 * With the touchscreen locked, a pocket or a cheek can't turn pages while a book is open:
+	 * nothing in the reader screen (page, toolbar) gets touch. Menus and dialogs are windows of
+	 * their own and keep working.
+	 */
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		if (mCurrentFrame == mReaderFrame && mReaderView != null && mReaderView.isTouchScreenLocked())
+			return true;
+		return super.dispatchTouchEvent(ev);
 	}
 
 	protected boolean allowLowBrightness() {

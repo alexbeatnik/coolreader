@@ -151,6 +151,10 @@
     <string name="action_reader_menu">Reader Menu</string>
     <string name="options_app_tap_action_short">Tap action</string>
     <string name="options_app_tap_action_long">Long tap action</string>
+    <string name="all_files_access_notice">To open books on the phone and the SD card, and to keep your reading positions and settings in the .cr3 folder, Cool Reader needs \"All files access\". Turn it on for Cool Reader on the next screen.</string>
+    <string name="all_files_access_open">Open settings</string>
+    <string name="options_app_touch_lock">Lock touchscreen while reading</string>
+    <string name="options_app_touch_lock_comment">Keypad phones: the screen ignores touch while a book is open; use the keys (Menu opens the menu)</string>
     <string name="action_touch_screen_toggle_lock">Lock/unlock touch screen</string>
     <string name="action_touch_screen_disabled_toast">Touch screen is locked</string>
     <string name="action_touch_screen_enabled_toast">Touch screen is unlocked</string>

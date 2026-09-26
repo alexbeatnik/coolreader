@@ -141,6 +141,10 @@
     <string name="action_reader_menu">Меню чтения</string>
     <string name="options_app_tap_action_short">Короткое нажатие</string>
     <string name="options_app_tap_action_long">Длинное нажатие</string>
+    <string name="all_files_access_notice">Чтобы открывать книги в памяти телефона и на SD-карте и хранить позиции чтения и настройки в папке .cr3, Cool Reader нужен «Доступ ко всем файлам». Включите его для Cool Reader на следующем экране.</string>
+    <string name="all_files_access_open">Открыть настройки</string>
+    <string name="options_app_touch_lock">Блокировать сенсор при чтении</string>
+    <string name="options_app_touch_lock_comment">Для кнопочных телефонов: пока открыта книга, экран не реагирует на касания; управление кнопками (Меню открывает меню)</string>
     <string name="action_touch_screen_toggle_lock">Блокировка сенсорного экрана</string>
     <string name="action_touch_screen_disabled_toast">Сенсорный экран отключен</string>
     <string name="action_touch_screen_enabled_toast">Сенсорный экран включен</string>

@@ -157,6 +157,8 @@ public interface Settings {
     public static final String PROP_APP_TRACKBALL_DISABLED    ="app.trackball.disabled";
     public static final String PROP_APP_SCREEN_BACKLIGHT_LOCK    ="app.screen.backlight.lock.enabled";
     public static final String PROP_APP_TAP_ZONE_HILIGHT     ="app.tapzone.hilight";
+    // Keypad phones: while a book is open the touchscreen is ignored, the keys drive the reader
+    public static final String PROP_APP_TOUCH_LOCK           ="app.touch.lock.reading";
     public static final String PROP_APP_FLICK_BACKLIGHT_CONTROL = "app.screen.backlight.control.flick";
     public static final String PROP_APP_FLICK_BACKLIGHT_CONTROL_TOGETHER = "app.screen.backlight.control.flick.together";
     public static final String PROP_APP_FLICK_WARMLIGHT_CONTROL = "app.screen.warmlight.control.flick";

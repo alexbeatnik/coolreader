@@ -51,6 +51,7 @@ import android.text.ClipboardManager;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -1961,6 +1962,7 @@ public class BaseActivity extends Activity implements Settings {
 			props.applyDefault(ReaderView.PROP_APP_SCREEN_ORIENTATION, "0"); // "0"
 			props.applyDefault(ReaderView.PROP_CONTROLS_ENABLE_VOLUME_KEYS, "1");
 			props.applyDefault(ReaderView.PROP_APP_TAP_ZONE_HILIGHT, "0");
+			props.applyDefault(ReaderView.PROP_APP_TOUCH_LOCK, "1");
 			props.applyDefault(ReaderView.PROP_APP_BOOK_SORT_ORDER, FileInfo.DEF_SORT_ORDER.name());
 			DictInfo dict = Dictionaries.defaultDictionary();
 			props.applyDefault(ReaderView.PROP_APP_DICTIONARY, (dict != null) ? dict.id : "");
@@ -2223,6 +2225,12 @@ public class BaseActivity extends Activity implements Settings {
 					hasHardwareMenuKey = false;
 				}
 			}
+			// Keypad phones: hasPermanentMenuKey() may say no although the keypad has a Menu key
+			// (the left soft key). A D-pad plus a Menu key on some input device counts.
+			if (!Boolean.TRUE.equals(hasHardwareMenuKey)
+					&& getResources().getConfiguration().navigation == Configuration.NAVIGATION_DPAD
+					&& KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_MENU))
+				hasHardwareMenuKey = true;
 			if (hasHardwareMenuKey == null) {
 				if (DeviceInfo.EINK_SCREEN)
 					hasHardwareMenuKey = false;
