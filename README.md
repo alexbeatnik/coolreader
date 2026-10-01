@@ -1,8 +1,8 @@
 CoolReader 3 - cross platform open source e-book reader
 =======================================================
 
-alexbeatnik mod for keypad phones
----------------------------------
+alexbeatnik's mod for keypad phones
+-----------------------------------
 
 This is an **unofficial** fork of [buggins/coolreader](https://github.com/buggins/coolreader) for
 keypad Android phones (built for the Rongyue E5: Android 13, 320x480, D-pad and soft keys). It is not
