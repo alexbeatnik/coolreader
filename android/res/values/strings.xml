@@ -155,6 +155,7 @@
     <string name="all_files_access_open">Open settings</string>
     <string name="action_backlight_up">Brightness up</string>
     <string name="action_backlight_down">Brightness down</string>
+    <string name="dlg_about_keypad_mod">alexbeatnik mod for keypad phones (unofficial)</string>
     <string name="options_app_touch_lock">Lock touchscreen while reading</string>
     <string name="options_app_touch_lock_comment">Keypad phones: the screen ignores touch while a book is open; use the keys (Menu opens the menu)</string>
     <string name="action_touch_screen_toggle_lock">Lock/unlock touch screen</string>

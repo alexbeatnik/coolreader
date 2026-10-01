@@ -1,6 +1,30 @@
 CoolReader 3 - cross platform open source e-book reader
 =======================================================
 
+alexbeatnik mod for keypad phones
+---------------------------------
+
+This is an **unofficial** fork of [buggins/coolreader](https://github.com/buggins/coolreader) for
+keypad Android phones (built for the Rongyue E5: Android 13, 320x480, D-pad and soft keys). It is not
+affiliated with the Cool Reader authors; the upstream project and its license (GPL v2 or later) are
+unchanged. Ready APKs are in [Releases](https://github.com/alexbeatnik/coolreader/releases); the
+version carries a `-keypadN` suffix and the About dialog says it is the mod.
+
+What the mod changes in the Android app:
+
+* **Touchscreen locked while reading** (Options / Controls, on by default): while a book is open the
+  page and the toolbar ignore touch, so a pocket can't turn pages. Menus and dialogs still take touch.
+* **Brightness on the D-pad**: up / down change the brightness, left / right turn one page each
+  (2 / 8 turn pages too). "Brightness up" / "Brightness down" can be put on any key.
+* The **Menu key** of a keypad (left soft key) is recognised, so the reader menu needs no tap.
+* **All files access** is requested on Android 11+, so books on the SD card and the `.cr3` folder
+  with settings and reading positions stay reachable.
+
+Sibling apps for the same phone: [JoyAmp](https://github.com/alexbeatnik/JoyAmp),
+[JoyBook](https://github.com/alexbeatnik/JoyBook), [JoyWeb](https://github.com/alexbeatnik/JoyWeb),
+[Call Touch Lock](https://github.com/alexbeatnik/CallTouchLock),
+[NetSwitch](https://github.com/alexbeatnik/NetSwitch).
+
 (c) Vadim Lopatin, 1998-2026
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License

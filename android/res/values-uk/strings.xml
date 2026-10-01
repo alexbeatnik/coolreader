@@ -137,6 +137,7 @@
     <string name="all_files_access_open">Відкрити налаштування</string>
     <string name="action_backlight_up">Яскравість +</string>
     <string name="action_backlight_down">Яскравість −</string>
+    <string name="dlg_about_keypad_mod">Мод alexbeatnik для кнопкових телефонів (неофіційний)</string>
     <string name="options_app_touch_lock">Блокувати сенсор під час читання</string>
     <string name="options_app_touch_lock_comment">Для кнопкових телефонів: поки відкрита книга, екран не реагує на дотики; керування кнопками (Меню відкриває меню)</string>
     <string name="action_touch_screen_toggle_lock">Блокування сенсорного екрану</string>
